@@ -1,0 +1,38 @@
+Model,Dataset,Timestamp,Execution Time
+original,['.\\data\\processed\\D3'],2025-03-24 06:01:51,0H:5M:43S
+model2_original,['.\\data\\D3'],2025-03-25 03:22:49,0H:15M:54S
+model2_original,['.\\data\\D3'],2025-03-25 04:02:56,0H:14M:40S
+model2_original,['./data/processed/D3'],2025-03-26 17:30:57,0H:3M:2S
+model2_vgg16,['./data/processed/D3'],2025-03-26 17:39:54,0H:5M:48S
+model2_original,['./data/processed/D3'],2025-03-26 18:00:25,0H:2M:51S
+model2_resnet,['./data/processed/D3'],2025-03-26 18:14:05,0H:5M:27S
+model2_original,['./data/processed/D1'],2025-03-26 19:08:25,0H:49M:59S
+model2_original,"['./data/processed/D1', './data/processed/D2']",2025-03-26 20:11:37,0H:46M:55S
+model2_vgg16,"['./data/processed/D1', './data/processed/D2']",2025-03-26 21:36:07,1H:20M:29S
+model2_resnet,"['./data/processed/D1', './data/processed/D2']",2025-03-26 22:57:04,1H:16M:21S
+model2_vgg16,"['./data/processed/D1']",2025-03-26 5:00:00,1H:00:21S
+model2_resnet,['./data/processed/D1'],2025-03-27 06:56:02,1H:16M:37S
+model2_original,"['./data/processed/D1', './data/processed/D3']",2025-03-27 09:50:36,0H:53M:53S
+model2_vgg16,"['./data/processed/D1', './data/processed/D3']",2025-03-27 11:34:28,1H:26M:17S
+model2_resnet,"['./data/processed/D1', './data/processed/D3']",2025-03-27 13:01:07,1H:22M:18S
+model2_original,"['./data/processed/D1', './data/processed/D2', './data/processed/D3']",2025-03-27 14:02:32,0H:53M:18S
+model2_vgg16,"['./data/processed/D1', './data/processed/D2', './data/processed/D3']",2025-03-27 15:54:10,1H:27M:45S
+model2_resnet,"['./data/processed/D1', './data/processed/D2', './data/processed/D3']",2025-03-27 17:28:58,1H:25M:6S
+model2_densenet,['./data/processed/D1'],2025-03-27 22:09:29,1H:16M:53S
+model2_densenet,"['./data/processed/D1', './data/processed/D2']",2025-03-27 23:36:46,1H:10M:4S
+model2_densenet,"['./data/processed/D1', './data/processed/D3']",2025-03-28 02:50:00,1H:20M:0S
+model1,['./data/processed/D3'],2025-03-28 03:15:48,0H:21M:0S
+model2_inceptionv3,"['./data/processed/D1', './data/processed/D3']",2025-03-28 05:14:52,1H:5M:43S
+model1,['./data/processed/D3'],2025-03-28 05:55:45,0H:20M:27S
+model1,['./data/processed/D2'],2025-03-28 06:04:56,0H:7M:33S
+model1,['./data/processed/D2'],2025-03-28 06:12:48,0H:2M:3S
+model2_densenet,"['./data/processed/D1', './data/processed/D2', './data/processed/D3']",2025-03-28 07:42:13,1H:19M:28S
+original,['.\\data\\processed\\D3'],2025-03-24 06:01:51,0H:5M:43S
+model2_original,['.\\data\\D3'],2025-03-25 03:22:49,0H:15M:54S
+model2_original,['.\\data\\D3'],2025-03-25 04:02:56,0H:14M:40S
+model1,['./data/processed/D3'],2025-03-27 04:09:11,0H:4M:0S
+model1,"['./data/processed/D1', './data/processed/D2', './data/processed/D3']",2025-03-27 09:19:41,5H:9M:44S
+model1,['./data/processed/D1'],2025-03-27 16:03:20,5H:23M:30S
+model1,['./data/processed/D2'],2025-03-27 21:13:02,0H:1M:20S
+model1,"['./data/processed/D1', './data/processed/D3']",2025-03-28 11:09:19,5H:1M:21S
+model1,"['./data/processed/D2', './data/processed/D3']",2025-03-28 13:21:58,0H:4M:46S
