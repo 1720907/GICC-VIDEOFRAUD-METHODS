@@ -1,7 +1,9 @@
 Detecting Frame Deletion in Videos Using Supervised and Unsupervised Learning with Convolutional Neural Networks
 ==============================
 
-This is a machine learning project called "Video fraud detection" which focuses in the detection of frame deletion in videos with the help of machine learning, and, specifically, with CNNs.
+This is a deep learning project which focuses in the detection of frame deletion in videos with the help of machine learning, and, specifically, with CNNs.
+
+**ID Paper:** 9568.
 
 Project Organization
 ------------
