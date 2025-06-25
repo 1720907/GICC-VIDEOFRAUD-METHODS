@@ -5,7 +5,9 @@ This is a deep learning project which focuses in the detection of frame deletion
 
 **ID Paper:** 9568.
 
-Project Organization
+**Authors:** Jorge Cerón & Cristian Tinipuclla
+
+Project Organization:
 ------------
 
     ├── LICENSE
