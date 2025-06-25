@@ -6,8 +6,8 @@ This is a deep learning project which focuses in the detection of frame deletion
 **ID Paper:** 9568.
 
 **Authors:** 
-* Jorge Cerón: B.Sc. in Systems Engineering from USIL, in 2022. Administrative TI Asistant at Public Ministry.
-* Cristian Tinipuclla: B.Sc. in Systems Engineering from USIL, in 2022. QA Analyst at Touch Consulting.
+* Jorge Cerón: B.Sc. in Systems Engineering from USIL, Lima-Peru in 2022. Currently working as Administrative TI Asistant at Public Ministry.
+* Cristian Tinipuclla: B.Sc. in Systems Engineering from USIL, Lima-Peru in 2022. Currently working as QA Analyst at Touch Consulting.
 
 Project Organization:
 ------------
