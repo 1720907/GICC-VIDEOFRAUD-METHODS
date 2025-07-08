@@ -166,44 +166,46 @@ def run():
         ## Calculate adaptive thresholds (lb, ub)
         lb_ub_videos = calculate_lb_ub(sod_videos, sigma_c)
 
-        ## Generating Graphics
-        # for i in range(len(r_videos)):
-        #   print(f"video lenght: {len(prepro_videos[i])}")
-        #   print(f"r (PCC) lenght: {len(r_videos[i])}")
-        #   print(f"rs lenght: {len(rs_videos[i])}")
-        #   print(f"Rs lenght: {len(sod_videos[i])}")
+        # Generating Graphics
+        for i in range(len(r_videos)):
+          print(f"video lenght: {len(prepro_videos[i])}")
+          print(f"r (PCC) lenght: {len(r_videos[i])}")
+          print(f"rs lenght: {len(rs_videos[i])}")
+          print(f"Rs lenght: {len(sod_videos[i])}")
 
-        #   fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(14, 3))
-        #   ax1.plot(r_videos[i])
-        #   ax1.set_xlabel('Data points')
-        #   ax1.set_ylabel('Value')
-        #   ax1.set_title(f'PCC (r)')
+          fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(14, 3))
+          ax1.plot(r_videos[i])
+          ax1.set_xlabel('Data points')
+          ax1.set_ylabel('Value')
+          ax1.set_title(f'PCC (r)')
 
-        #   ax2.plot(rs_videos[i])
-        #   ax2.set_xlabel('Data points')
-        #   ax2.set_ylabel('Value')
-        #   ax2.set_title(f'PCC Diferences (rs)')
+          ax2.plot(rs_videos[i])
+          ax2.set_xlabel('Data points')
+          ax2.set_ylabel('Value')
+          ax2.set_title(f'PCC Diferences (rs)')
 
-        #   ax3.plot(sod_videos[i])
-        #   ax3.set_xlabel('Data points')
-        #   ax3.set_ylabel('Value')
-        #   ax3.set_title(f'SOD with lb and ub')
+          ax3.plot(sod_videos[i])
+          ax3.set_xlabel('Data points')
+          ax3.set_ylabel('Value')
+          ax3.set_title(f'SOD with lb and ub')
 
-        # # Draw horizontal lines based on limits
-        #   y_values = [lb_ub_videos[i][0]*y2, lb_ub_videos[i][1]*y2, lb_ub_videos[i][0]*y1, lb_ub_videos[i][1]*y1]
-        #   colors = ['r', 'g', 'c', 'orange']
-        #   labels = ['y2*lb', 'y2*ub', 'y1*lb', 'y1*ub']
-        #   for j, (y, color, label) in enumerate(zip(y_values, colors, labels)):
-        #     ax3.axhline(y=y, color=color, linestyle='-')
-        #     if j % 2 == 0:  # Para las líneas inferiores (Y1, Y3), colocamos el texto encima de la línea
-        #       ax3.text(50, y, f' {label}', va='bottom', ha='left')  # Ajusta la posición x según sea necesario
-        #     else:  # Para las líneas superiores (Y2, Y4), colocamos el texto debajo de la línea
-        #       ax3.text(50, y, f' {label}', va='top', ha='left')  # Ajusta la posición x según sea necesario
-        #   fig.suptitle(f'video {i+1}: {video_names[i][0]}')
-        #   fig.subplots_adjust(wspace=0.3, hspace=0.3, top=0.80)  # Adjust space between subplots
-        #   # plt.show() 
-        #   plt.savefig(f"{graph_path}/{video_names[i][0]}.png", format='png')
-        ## Executing VFD and VFC
+        # Draw horizontal lines based on limits
+          y_values = [lb_ub_videos[i][0]*y2, lb_ub_videos[i][1]*y2, lb_ub_videos[i][0]*y1, lb_ub_videos[i][1]*y1]
+          colors = ['r', 'g', 'c', 'orange']
+          labels = ['y2*lb', 'y2*ub', 'y1*lb', 'y1*ub']
+          for j, (y, color, label) in enumerate(zip(y_values, colors, labels)):
+            ax3.axhline(y=y, color=color, linestyle='-')
+            if j % 2 == 0:  # Para las líneas inferiores (Y1, Y3), colocamos el texto encima de la línea
+              ax3.text(50, y, f' {label}', va='bottom', ha='left')  # Ajusta la posición x según sea necesario
+            else:  # Para las líneas superiores (Y2, Y4), colocamos el texto debajo de la línea
+              ax3.text(50, y, f' {label}', va='top', ha='left')  # Ajusta la posición x según sea necesario
+          fig.suptitle(f'video {i+1}: {video_names[i][0]}')
+          # fig.subplots_adjust(wspace=0.3, hspace=0.3, top=0.80)  # Adjust space between subplots
+          plt.tight_layout(rect=[0, 0, 1, 0.93])  # Leaves space for suptitle
+
+          # plt.show() 
+          plt.savefig(f"{'/models/model2_vgg16_predictions/D3/graphs'}/{video_names[i][0]}.png", format='png')
+        # Executing VFD and VFC
         for i, sod_v in enumerate(sod_videos):
           lb, ub = lb_ub_videos[i]
           vfd = vf_detection(rs_videos[i], lambda_t)

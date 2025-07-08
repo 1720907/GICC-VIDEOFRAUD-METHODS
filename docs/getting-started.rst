@@ -43,4 +43,5 @@ Pasos
   - *p1_data_batches*: Videos en batches .npy.
   - *p1_label_batches*: Etiquetas de batches en .csv
 3. Forgery task: Activar environment `forgery_env` y ejecutar `python forgery/main.py -d D1/data/ -f D1/forgery_data/ -l D1/forgery_labels -fd D1/forgery_info/`.
-4. Preprocessing task: Ejecutar `python prototype_1/preprocessing.py -fd D1/forgery_data/ -fl D1/forgery_labels/ -db D1/p1_data_batches/ -lb D1/p1_label_batches/`.
+4. Preprocessing task para P1: Ejecutar `python prototype_1/preprocessing.py -fd D1/forgery_data/ -fl D1/forgery_labels/ -db D1/p1_data_batches/ -lb D1/p1_label_batches/`.
+5. Preprocessing task para P3: Ejecutar `python ./src/features/preprocessing/model_3_ours_preprocess.py -fd ./data/D3/forgery_data -fl ./data/D3/forgery_labels -db ./data/D3/p3_data_batches/ -lb ./data/D3/p3_label_batches/`

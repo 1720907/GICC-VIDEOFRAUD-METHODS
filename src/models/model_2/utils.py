@@ -10,6 +10,7 @@ from keras.layers import Conv2D, MaxPooling2D, Input
 from skimage.feature import hog
 from models_registry import MODEL_FUNCTIONS  # Import the function mapping
 
+
 # 4.1. PREPROCESSING
 ## Grayscale and resize video
 def preprocess_video(video_path, counter, model_name):

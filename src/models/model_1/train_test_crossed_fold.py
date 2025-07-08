@@ -51,15 +51,12 @@ def generator(set_indexes, dataset_paths, complete_df_labels):
 def generator2(set_indexes, dataset_paths, complete_df_labels, complete_df):
   subset_df = complete_df.iloc[set_indexes]
   for row in subset_df.itertuples():
-    """
-    Here labels is a subset dataframe of complete_df_labels (contains labels of every batch)
-    "complete_df_labels['name']==row.name is the condition"; 'labels' is the only column selected from the subset dataframe
-    """
     labels = complete_df_labels.loc[complete_df_labels['name']==row.name, 'labels'].astype(int).to_numpy()
     path = join(dataset_paths[row.dataset],"p1_data_batches",f"{row.name}.npy")
     if(row.name[-4:]=='.mp4'):
       raise Exception(f'Nombre archivo: {row.name}')
     data = np.load(path)
+    print(f"Data shape: {data.shape}, Data length: {len(data)}, Labels length: {len(labels)}") # compare data length with labels length
     for i in range(len(data)):
       yield data[i], labels[i]
 

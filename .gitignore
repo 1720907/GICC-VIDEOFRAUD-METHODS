@@ -27,7 +27,7 @@ var/
 models/**/D*/**.npy
 
 # Ignorar todos los archivos .hdf5/.keras dentro de models/
-models/**/D*/**.hdf5
+models/**/D*/**.h5
 models/**/D*/**.keras
 
 # PyInstaller
@@ -94,3 +94,6 @@ target/
 
 # Mypy cache
 .mypy_cache/
+
+# logs
+*.csv

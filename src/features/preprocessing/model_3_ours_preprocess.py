@@ -17,122 +17,172 @@ def parse_args():
   parser.add_argument('-kar','--keep_aspect_ratio', type=bool, default=1, help='Whether keep aspect ratio or not when resizing videos')
   return parser.parse_args()
 
+# Search for the first occurrence of 1
+def find_first_one(array):
+
+    for index, value in enumerate(array):
+        if value == 1:
+            return index
+    return -1
+
 def run():
   args = parse_args()
-  #definicion de argumentos
-  video_dir = args.forgery_data
+  
+  # Define args
+  videos_path = args.forgery_data
   labels_path = args.forgery_labels
   data_batches_path = args.data_batches
   label_batches_path = args.label_batches
   keep_aspect_ratio = args.keep_aspect_ratio
 
-  # Ordering videos
-  input_videos = [f for f in listdir(video_dir) if isfile(join(video_dir, f))]
-  input_videos = sorted(input_videos)
-
+  # Order videos
+  input_videos = [f for f in listdir(videos_path) if isfile(join(videos_path, f))] # Create a list of video file names (without directories)
+  input_videos = sorted(input_videos) # Sort the list in ascending order
   
-  # ordering labels
-  input_labels = [f for f in listdir(labels_path) if isfile(join(labels_path, f))]
-  input_labels = sorted(input_labels)
+  # Order labels
+  input_labels = [f for f in listdir(labels_path) if isfile(join(labels_path, f))] # Create a list of labels (without directories)
+  input_labels = sorted(input_labels) # Sort the list in ascending order
   
-  # index to save batch
+  # Index to save batch
   current_video_index = 0
-  #total list
-  """
-  total_list=[]
-  labels = np.array([],dtype='uint8')
-  """
+  
+  # Create a dataframe of labels
   labels = pd.DataFrame(columns=['name','labels'])
-  # Loop over each video file
+  
   for video in input_videos:
-  # for i, video_file in enumerate(video_files):
-      # Read video frames
-      print(f"Batching video: {video}...")
-      video_path = os.path.join(video_dir, video)
-      cap = cv2.VideoCapture(video_path)
-      if not cap.isOpened():
-          print(f"Error opening video file: {video_path}")
-          continue
-
-      fps = cap.get(cv2.CAP_PROP_FPS)
-      frames = []
-      # Loop over the frames in the video
-      while True:
-          ret, frame = cap.read()
-          if not ret:
-              break
-          frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-          frames.append(frame_gray)
-      video_frames = np.array(frames)
-      cap.release()
-      # Resize
-      processed_frames = resize_frames(video_frames, keep_aspect_ratio, (250,250))
-      processed_frames = np.array(processed_frames)
-
-      # Normalize frames
-      processed_frames = processed_frames.astype('float32')/255
     
-      # Read video label
-      path = os.path.join(labels_path,input_labels[current_video_index])
-      label = np.load(path)
+    print(f"Batching video: {video}...\n")
+    video_path = os.path.join(videos_path, video)
 
-      print(f"Label name: {input_labels[current_video_index]} \n")
+    cap = cv2.VideoCapture(video_path)
+    
+    # Validate video availability
+    if not cap.isOpened():
+      print(f"Error opening video file: {video_path}")
+      continue
+    
+    # Get frames per second
+    fps = cap.get(cv2.CAP_PROP_FPS) 
+    frames = []
+    
+    # Looping over the frames in the video
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        
+        # Grayscale video frame
+        frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        frames.append(frame_gray)
 
-      # Generate video frame batches
-      video_frame_batches = generate_frame_batches(processed_frames, batch_size=100)
-      video_frame_batches = np.array(video_frame_batches)
+    video_frames = np.array(frames)
+    cap.release()
 
-      # Generate video label batches
-      video_label_batches = generate_label_batches(label,batch_size=100)
-      video_label_batches = np.array(video_label_batches)
-      Ytrain = []
-      names = []
-      for batch in video_label_batches:
-        isForged = any(forged == 1 for forged in batch)
-        if isForged:
-          Ytrain.append(1)
-        else:
-          Ytrain.append(0)
-      # Adaptar Ytrain
-      Ytrain = label_diff(Ytrain)
-      # Second tranformation
-      Ytrain = label_diff(Ytrain)
-      for i in range(len(Ytrain)):
-         names.append(video[:-4])
+    # Resize video frames
+    processed_frames = resize_frames(video_frames, keep_aspect_ratio, (250,250))
+    processed_frames = np.array(processed_frames)
+
+    # Normalize frames
+    processed_frames = processed_frames.astype('float32')/255
+  
+    # Read video label
+    path = os.path.join(labels_path, input_labels[current_video_index])
+    label = np.load(path)
+
+    # print(f"Label name: {input_labels[current_video_index]} \n")
+    # print(f"Label length: {label.shape[0]}, Label: {label} \n")
+    
+    # Generate video frame batches
+    video_frame_batches = generate_frame_batches(processed_frames, batch_size=100)
+    video_frame_batches = np.array(video_frame_batches)
+
+    # Generate video label batches
+    video_label_batches = generate_label_batches(label, batch_size=100)
+    video_label_batches = np.array(video_label_batches)
+    y_train = []
+    names = []
+    
+    # print(f"Log:\n Video frame batches length: {video_frame_batches.shape[0]} \n Video label batches length: {video_label_batches.shape[0]}\n")
+    
+
+    # # Adaptar y_train
+    # # Second tranformation
+    # y_train = label_diff(y_train)
+
+    # print(f"Log:\n Video label batches length (y_train): {len(y_train)}\n\n")
+
+    corr_differences_list = []
+    labels_differences_list = []
+    
+    # Compute correlation differences per each batch of video frames
+    for i in range(len(video_label_batches)):
+      
+      # Get video frame batch and labels batch
+      batch = video_frame_batches[i]
+      label_batch = video_label_batches[i]
+
+      # Print log information before correlation coefficient calculation
+      print(f"""\033[1mLog (Before correlation coef. calculation):\033[0m 
+            \n Video batch length {len(batch)}...
+            \n Labels batch length {len(label_batch)}...
+            \n Labels batch {label_batch}...
+            \n Position of 1: {find_first_one(label_batch)}...\n""")
+
+      # Compute correlation coefficients
+      corr_coefficients = compute_correlation_coefficients(batch)
+      label_batch_coef = label_diff(label_batch)
+      
+      # Print log information after correlation coefficient calculation
+      print(f"""\033[1mLog (After correlation coef. calculation):\033[0m
+            \n Video batch length {len(corr_coefficients)}...
+            \n Labels batch length {len(label_batch_coef)}...\n
+            \n Labels batch {label_batch_coef}...
+            \n Position of 1: {find_first_one(label_batch_coef)}...\n""")
 
       # Compute correlation differences
-      corr_differences_list = []
-      for batch in video_frame_batches:
-         corr_coefficients = compute_correlation_coefficients(batch)
-         corr_differences = compute_correlation_differences(corr_coefficients)
-         corr_differences = np.array(corr_differences)
-         corr_differences = corr_differences.reshape(1,98)
-         corr_differences_list.append(corr_differences)
-      corr_differences_list = np.array(corr_differences_list)
+      corr_differences = compute_correlation_differences(corr_coefficients)
+      label_batch_diff = label_diff(label_batch_coef)
+      
+      # Print log information after correlation coefficient difference calculation
+      print(f"""\033[1mLog (After correlation coef. difference calculation):\033[0m  
+            \n Video batch length {len(corr_differences)}...
+            \n Labels batch length {len(label_batch_diff)}...
+            \n Labels batch {label_batch_diff}...
+            \n Position of 1: {find_first_one(label_batch_diff)}...\n""")
 
-      """
-      # Add indexes in total_list
-      for k in range(len(video_frame_batches)):
-        total_list.append([current_video_index,k])
-      """
-      data = {'name': names, 'labels': Ytrain}
-      video_df = pd.DataFrame(data)
-      labels = pd.concat([labels,video_df],ignore_index=True)
+      corr_differences = np.array(corr_differences)
+      corr_differences = corr_differences.reshape(1, 98)
 
+      # Append correlation differences and labels to lists
+      corr_differences_list.append(corr_differences)
+      labels_differences_list.append(label_batch_diff)
 
-      # Save array of frames
-      filename = os.path.splitext(video)[0]
-      path = os.path.join(data_batches_path,f'{filename}.npy')
-      np.save(path,corr_differences_list)
+    corr_differences_list = np.array(corr_differences_list)
 
-      """
-      # Save labels
-      labels = np.append(labels, Ytrain)
-      """
+    # Label per each batch
+    for batch in labels_differences_list:
+      is_forged = any(forged == 1 for forged in batch)
+      if is_forged:
+        y_train.append(1)
+      else:
+        y_train.append(0)
+    
+    for _ in range(len(y_train)):
+        names.append(video[:-4])
 
-      # Update current_video_index to the next iteration
-      current_video_index+=1
-      print((current_video_index*100)//len(input_videos))
+    # Add labeled batches of a video to df "labels"
+    data = {'name': names, 'labels': y_train}
+    video_df = pd.DataFrame(data)
+    labels = pd.concat([labels, video_df], ignore_index=True)
+
+    # Save to path array of correlation differences list
+    filename = os.path.splitext(video)[0]
+    path = os.path.join(data_batches_path, f'{filename}.npy')
+    np.save(path, corr_differences_list)
+
+    # Update current_video_index to the next iteration
+    current_video_index+=1
+    # print(f"Current video: {(current_video_index*100)//len(input_videos)}")
 
   """
   # Save labels
@@ -144,7 +194,7 @@ def run():
   path = os.path.join(indexes_path,'indexes.npy')
   np.save(path, total_list)
   """
-  #Saving labels
+  #Save labels
   labels.to_csv(join(label_batches_path,'label_batches.csv'),encoding='utf-8-sig', index=False)
 
 if __name__ == '__main__':
